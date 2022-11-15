@@ -2,7 +2,7 @@ dbt_docs_s3_upload:
   outputs:
     dev:
       type: bigquery
-      method: service-account
+      method: service-account-json
       project: dbt-docs-s3-upload
       dataset: analytics
       threads: 1
