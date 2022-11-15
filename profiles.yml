@@ -1,0 +1,27 @@
+dbt_docs_s3_upload:
+  outputs:
+    dev:
+      dataset: analytics
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      keyfile: /Users/sg/projects/dbt-docs-s3-upload/dbt-docs-s3-upload-13b4f58ea2f0.json
+      location: US
+      method: service-account
+      priority: interactive
+      project: dbt-docs-s3-upload
+      threads: 1
+      type: bigquery
+
+      # These fields come from the service account json keyfile
+      keyfile_json:
+        type: service_account
+        project_id: dbt-docs-s3-upload
+        private_key_id: "{{ env_var('GCP_PRIVATE_KEY_ID') }}"
+        private_key: "{{ env_var('GCP_PRIVATE_KEY') }}"
+        client_email: dbt-332@dbt-docs-s3-upload.iam.gserviceaccount.com
+        client_id: "106250924820573541526"
+        auth_uri: https://accounts.google.com/o/oauth2/auth
+        token_uri: https://oauth2.googleapis.com/token
+        auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
+        client_x509_cert_url: https://www.googleapis.com/robot/v1/metadata/x509/dbt-332%40dbt-docs-s3-upload.iam.gserviceaccount.com
+  target: dev
