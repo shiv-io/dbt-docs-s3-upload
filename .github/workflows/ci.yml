@@ -12,10 +12,14 @@ on:
     types: [ci]
 
 env:
-  GCP_PRIVATE_KEY: ${{ secrets.GCP_PRIVATE_KEY }}
-  GCP_PRIVATE_KEY_ID: ${{ secrets.GCP_PRIVATE_KEY_ID }}
+  # GCP_PRIVATE_KEY: ${{ secrets.GCP_PRIVATE_KEY }}
+  # GCP_PRIVATE_KEY_ID: ${{ secrets.GCP_PRIVATE_KEY_ID }}
   LC_ALL: C.UTF-8
   LANG: C.UTF-8
+  DBT_PROFILES_DIR: ./
+  DBT_GOOGLE_PROJECT: dbt-docs-s3-upload
+  DBT_GOOGLE_BIGQUERY_DATASET: analytics
+  DBT_GOOGLE_BIGQUERY_KEYFILE: ./.gcloud/dbt-service-account.json
 
 jobs:
   build:
@@ -25,9 +29,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - run: 'echo "$KEYFILE" > ./.gcloud/dbt-service-account.json'
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.DBT_GOOGLE_BIGQUERY_KEYFILE}}
       - name: dbt debug
-        run: dbt debug --profiles-dir $PWD
+        run: dbt debug
       - name: dbt deps
-        run: dbt deps --profiles-dir $PWD
+        run: dbt deps
       - name: dbt build
-        run: dbt build --profiles-dir $PWD
+        run: dbt build
