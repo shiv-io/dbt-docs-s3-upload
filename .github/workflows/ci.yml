@@ -69,7 +69,7 @@ jobs:
           python update_policy.py
           aws s3api put-bucket-policy --bucket ${{ github.ref_name }} \
           --policy file://policy_updated.json
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
