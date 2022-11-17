@@ -11,4 +11,7 @@ dbt_docs_s3_upload:
       job_retries: 1
       location: US
       priority: interactive
+      # If a query would bill more than a gigabyte of data, then
+      # BigQuery will reject the query
+      maximum_bytes_billed: 1000000000
   target: dev
