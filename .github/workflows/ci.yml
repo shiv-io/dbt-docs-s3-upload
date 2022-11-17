@@ -45,6 +45,10 @@ jobs:
         run: |
           dbt docs generate
           cp -r target ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1.0.4
+        with:
+          arch: amd64    # allowed values: amd64, arm64
       - name: Create S3 bucket
         run: |
           aws s3api create-bucket \
