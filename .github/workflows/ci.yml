@@ -1,0 +1,45 @@
+# For workflow syntax reference, please see the documentation available on Github
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+
+name: CI
+
+on:
+  push:
+  # schedule:
+  #   - cron: "30 12 * * *" # Run the `main` branch daily at 12:30pm UTC / 5:30am PDT / 8:30am PDT
+  workflow_dispatch: # Allow the workflow to be triggered manually
+  repository_dispatch: # Allow the workflow to be triggered via HTTP
+    types: [ci]
+
+env:
+  # GCP_PRIVATE_KEY: ${{ secrets.GCP_PRIVATE_KEY }}
+  # GCP_PRIVATE_KEY_ID: ${{ secrets.GCP_PRIVATE_KEY_ID }}
+  LC_ALL: C.UTF-8
+  LANG: C.UTF-8
+  DBT_PROFILES_DIR: ./
+  DBT_GOOGLE_PROJECT: dbt-docs-s3-upload
+  DBT_GOOGLE_BIGQUERY_DATASET: analytics
+  DBT_GOOGLE_BIGQUERY_KEYFILE: ./.gcloud/dbt-service-account.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/dbt-labs/dbt-bigquery:1.3.0
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: 'echo "$KEYFILE" > ./.gcloud/dbt-service-account.json'
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.DBT_GOOGLE_BIGQUERY_KEYFILE}}
+      - name: dbt debug
+        run: dbt debug
+      - name: dbt deps
+        run: dbt deps
+      - name: dbt build
+        run: dbt build
+      - name: dbt docs generate
+        run: |
+          dbt docs generate
+          cp -r target ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef

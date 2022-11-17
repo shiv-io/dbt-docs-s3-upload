@@ -1,0 +1,17 @@
+dbt_docs_s3_upload:
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('DBT_GOOGLE_BIGQUERY_KEYFILE') }}"
+      project: dbt-docs-s3-upload
+      dataset: analytics
+      threads: 1
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      priority: interactive
+      # If a query would bill more than a gigabyte of data, then
+      # BigQuery will reject the query
+      maximum_bytes_billed: 1000000000
+  target: dev
