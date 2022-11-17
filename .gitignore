@@ -2,3 +2,5 @@
 target/
 dbt_packages/
 logs/
+dbt-docs-s3-upload-13b4f58ea2f0.json
+.user.yml
