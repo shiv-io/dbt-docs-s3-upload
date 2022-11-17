@@ -57,7 +57,7 @@ jobs:
       - name: Copy to S3 bucket
         run: |
           aws s3 cp \
-            ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef/target \
+            ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef \
             s3://${{ github.ref_name }} \
             --recursive
       - name: Host bucket as static website
