@@ -39,3 +39,7 @@ jobs:
         run: dbt deps
       - name: dbt build
         run: dbt build
+      - name: dbt docs generate
+        run: |
+          dbt docs generate
+          cp -r target ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef
