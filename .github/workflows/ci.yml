@@ -20,8 +20,6 @@ env:
   DBT_GOOGLE_PROJECT: dbt-docs-s3-upload
   DBT_GOOGLE_BIGQUERY_DATASET: analytics
   DBT_GOOGLE_BIGQUERY_KEYFILE: ./.gcloud/dbt-service-account.json
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   build:
@@ -45,10 +43,12 @@ jobs:
         run: |
           dbt docs generate
           cp -r target ./docs/40bd001563085fc35165329ea1ff5c5ecbdbbeef
-      - id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1.0.4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          arch: amd64    # allowed values: amd64, arm64
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS SECRET ACCESS KEY }}
+          aws-region: us-west-1
       - name: Create S3 bucket
         run: |
           aws s3api create-bucket \
