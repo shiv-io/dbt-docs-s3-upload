@@ -70,10 +70,15 @@ jobs:
           aws s3api put-bucket-policy --bucket ${{ github.ref_name }} \
           --policy file://policy_updated.json
       - name: Comment on PR
-        uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v3
         with:
-          msg: "Check out this message!"
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '👋 Test comment'
+            }) 
         if: ${{ github.ref != 'refs/heads/main' }}
           
