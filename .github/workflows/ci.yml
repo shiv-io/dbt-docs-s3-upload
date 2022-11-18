@@ -75,7 +75,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: >
-            Hello, test comment!
-            ${{ github.ref_name }}
+            [dbt docs site - ${{ github.ref_name }}](https://${{ github.ref_name }}.s3.amazonaws.com/index.html) deployed!
         if: ${{ github.ref != 'refs/heads/main' }}
           
