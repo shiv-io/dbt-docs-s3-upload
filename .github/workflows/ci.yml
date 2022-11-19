@@ -25,7 +25,7 @@ env:
   # TODO: 
   # Validation to ensure S3_BUCKET follows naming conventions
   # https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-  S3_BUCKET: dbt-docs-branch__${{ github.ref_name }}
+  S3_BUCKET: dbt-${{ github.ref_name }}-bucket
 
 jobs:
   build:
