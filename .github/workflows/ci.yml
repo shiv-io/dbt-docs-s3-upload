@@ -22,6 +22,10 @@ env:
   DBT_GOOGLE_BIGQUERY_KEYFILE: ./.gcloud/dbt-service-account.json
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # TODO: 
+  # Validation to ensure S3_BUCKET follows naming conventions
+  # https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+  S3_BUCKET: dbt-${{ github.ref_name }}-bucket
 
 jobs:
   build:
@@ -53,21 +57,19 @@ jobs:
         run: |
           aws s3api create-bucket \
             --acl public-read \
-            --bucket ${{ github.ref_name }}
+            --bucket $S3_BUCKET
       - name: Copy to S3 bucket
         run: |
-          aws s3 cp ./docs s3://${{ github.ref_name }} --recursive
+          aws s3 cp ./docs s3://$S3_BUCKET --recursive
       - name: Host bucket as static website
         run: |
           aws s3 website \
-            s3://${{ github.ref_name }} \
+            s3://$S3_BUCKET \
             --index-document index.html
       - name: Add S3 bucket policy for public access
-        env: 
-          S3_BUCKET: ${{ github.ref_name }}
         run: |
           python update_policy.py
-          aws s3api put-bucket-policy --bucket ${{ github.ref_name }} \
+          aws s3api put-bucket-policy --bucket $S3_BUCKET \
           --policy file://policy_updated.json
       - name: Comment on PR
         uses: unsplash/comment-on-pr@master
@@ -75,6 +77,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           msg: >
-            [dbt docs site - ${{ github.ref_name }}](https://${{ github.ref_name }}.s3.amazonaws.com/index.html) deployed!
+            [dbt docs site - ${{ env.S3_BUCKET }}](https://${{ env.S3_BUCKET }}.s3.amazonaws.com/index.html) deployed!
         if: ${{ github.ref != 'refs/heads/main' }}
           
