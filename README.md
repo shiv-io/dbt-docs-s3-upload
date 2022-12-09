@@ -1,15 +1,7 @@
-Welcome to your new dbt project!
+## dbt-docs-s3-upload
 
-### Using the starter project
+A proof-of-concept dbt project that deploys dbt docs sites on S3 for each branch. For example, opening a branch `feature-add-x` deploys a docs site on AWS called `dbt-feature-add-x-bucket` with the changes in the branch.
 
-Try running the following commands:
-- dbt run
-- dbt test
+To use, add `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` to repository secrets (Settings > Secrets > Actions).
 
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+For example, see [PR #3](https://github.com/shiv-io/dbt-docs-s3-upload/pull/3).
