@@ -5,3 +5,9 @@ A proof-of-concept dbt project that deploys dbt docs sites on S3 for each branch
 To use, add `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` to repository secrets (Settings > Secrets > Actions).
 
 For example, see [PR #3](https://github.com/shiv-io/dbt-docs-s3-upload/pull/3).
+
+## Contributing
+
+To submit a feature request, submit an issue. To fix an existing [issue](https://github.com/shiv-io/dbt-docs-s3-upload/issues), fork and open a pull request.
+
+Comments/questions welcome!
